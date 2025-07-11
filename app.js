@@ -5,6 +5,18 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const session = require('express-session');
 require('dotenv').config();
+const sequelize = require('./config/database');
+const Usuario = require('./models/Usuario');
+
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Banco conectado!');
+    await sequelize.sync();
+  } catch (err) {
+    console.error('Erro ao conectar:', err);
+  }
+})();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
