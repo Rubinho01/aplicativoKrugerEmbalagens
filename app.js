@@ -33,6 +33,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // se estiver rodando localmente com HTTP
+}));
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
@@ -52,10 +59,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.use(session({
-  secret: process.env.SESSION_SECRET, // pode ser qualquer string
-  resave: false,
-  saveUninitialized: false
-}));
+
 
 module.exports = app;
