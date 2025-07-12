@@ -5,9 +5,21 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const session = require('express-session');
 require('dotenv').config();
+const sequelize = require('./config/database');
+const Usuario = require('./models/Usuario');
+
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Banco conectado!');
+    await sequelize.sync();
+  } catch (err) {
+    console.error('Erro ao conectar:', err);
+  }
+})();
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var adminRouter = require('./routes/adminRoute');
 
 var app = express();
 
@@ -21,8 +33,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // se estiver rodando localmente com HTTP
+}));
+
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -40,10 +59,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.use(session({
-  secret: process.env.SESSION_SECRET, // pode ser qualquer string
-  resave: false,
-  saveUninitialized: false
-}));
+
 
 module.exports = app;

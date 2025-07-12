@@ -1,5 +1,8 @@
 var express = require('express');
 var router = express.Router();
+const Usuario = require('../models/Usuario');
+const usuarioController = require('../controllers/usuarioController');
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -8,6 +11,25 @@ router.get('/', function(req, res, next) {
 
 router.get('/login',(req, res) => {
   res.render('auth/loginForm')
+});
+
+router.post('/login', usuarioController.entrarSistema);
+
+router.get('/cadastro', (req,res) =>{
+  res.render('auth/registroForm');
 })
+
+router.post('/registrar', usuarioController.registrar);
+
+router.get('/correto', verificarSessao, (req, res) =>{
+  res.render('index');
+})
+
+function verificarSessao(req, res, next){
+  if(!req.session.userId) return res.redirect('/');
+  else{
+    next();
+  }
+}
 
 module.exports = router;
