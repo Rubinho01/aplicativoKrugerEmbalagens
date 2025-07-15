@@ -9,6 +9,9 @@ const sequelize = require('./config/database');
 const Usuario = require('./models/Usuario');
 const Admin = require('./models/admin');
 const produto = require('./models/produto');
+const pedido = require('./models/pedido');
+const itemPedido = require('./models/itemPedido');
+const index = require('./models/index');
 
 (async () => {
   try {
@@ -20,7 +23,7 @@ const produto = require('./models/produto');
   }
 })();
 
-sequelize.sync()
+sequelize.sync({ alter: true})
   .then(() => {
     console.log('Tabelas sincronizadas com sucesso!');
   })
