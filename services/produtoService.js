@@ -11,3 +11,10 @@ exports.addProduto = async({ nome, preco, descricao, situacao, fotos }) => {
     foto3: fotos[2] || null
   });
 };
+
+exports.encontrarProduto = async(id) => {
+  const produto = await Produto.findByPk(id);
+  if(!produto) throw new Error("Produto Não encontrado");
+  return produto;
+  
+}

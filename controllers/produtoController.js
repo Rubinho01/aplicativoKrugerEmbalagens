@@ -40,3 +40,15 @@ exports.adicionar = (req, res) => {
     }
   });
 }
+
+exports.carregarProduto = async(req, res) => {
+  try {
+    const {id} = req.params;
+    const produto = await produtoService.encontrarProduto(id);
+    console.log(produto);
+    res.render('produto/verProduto', {produto});
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+
+}
