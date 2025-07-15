@@ -8,6 +8,7 @@ require('dotenv').config();
 const sequelize = require('./config/database');
 const Usuario = require('./models/Usuario');
 const Admin = require('./models/admin');
+const produto = require('./models/produto');
 
 (async () => {
   try {

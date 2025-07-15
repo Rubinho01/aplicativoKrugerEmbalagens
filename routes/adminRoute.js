@@ -14,6 +14,10 @@ router.get('/dashboard',verificarAdmin,  (req, res) => {
 })
 
 
+router.get('/novo-item', verificarAdmin, (req, res) => {
+  res.render('admin/novoItem');
+})
+
 
 
 function verificarAdmin(req, res, next) {
