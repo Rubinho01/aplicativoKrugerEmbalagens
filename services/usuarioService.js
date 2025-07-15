@@ -1,5 +1,6 @@
-const { Usuario } = require('../models');
+const { Usuario, Pedido} = require('../models');
 const bcrypt = require('bcrypt');
+
 
 exports.criarUsuario = async ({nome, email, telefone, senha}) =>{
     const existente = await Usuario.findOne({where: {email}});
@@ -15,4 +16,13 @@ exports.buscarUsuarioEmaileSenha = async ({email, senha}) =>{
     if(!senhaCorreta) throw new Error("Senha Inválida");
     
     return usuario;
+}
+
+exports.atribuirPedido = async({usuario}) =>{
+    const pedidoExistente = await Pedido.findOne({where : {usuarioId: usuario, status:"PENDENTE"}});
+    if(pedidoExistente) return pedidoExistente;
+    else {
+        const pedido = await Pedido.create({usuarioId: usuario});
+        return pedido;
+    }
 }

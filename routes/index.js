@@ -21,9 +21,7 @@ router.get('/cadastro', (req,res) =>{
 
 router.post('/registrar', usuarioController.registrar);
 
-router.get('/correto', verificarSessao, (req, res) =>{
-  res.render('index');
-})
+router.get('/mainpage', verificarSessao, usuarioController.gerarPedido)
 
 function verificarSessao(req, res, next){
   if(!req.session.userId) return res.redirect('/');
