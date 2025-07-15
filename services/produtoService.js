@@ -1,7 +1,7 @@
-const produtoModel = require('../models/produto');
+const {Produto} = require('../models');
 
 exports.addProduto = async({ nome, preco, descricao, situacao, fotos }) => {
-  await produtoModel.create({
+  await Produto.create({
     nome,
     preco,
     descricao,

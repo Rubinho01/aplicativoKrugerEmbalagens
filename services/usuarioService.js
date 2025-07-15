@@ -1,4 +1,4 @@
-const Usuario = require('../models/Usuario');
+const { Usuario } = require('../models');
 const bcrypt = require('bcrypt');
 
 exports.criarUsuario = async ({nome, email, telefone, senha}) =>{
