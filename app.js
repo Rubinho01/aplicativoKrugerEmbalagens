@@ -7,6 +7,12 @@ const session = require('express-session');
 require('dotenv').config();
 const sequelize = require('./config/database');
 const Usuario = require('./models/Usuario');
+const Admin = require('./models/admin');
+const produto = require('./models/produto');
+const pedido = require('./models/pedido');
+const itemPedido = require('./models/itemPedido');
+const index = require('./models/index');
+
 
 (async () => {
   try {
@@ -17,6 +23,14 @@ const Usuario = require('./models/Usuario');
     console.error('Erro ao conectar:', err);
   }
 })();
+
+sequelize.sync()
+  .then(() => {
+    console.log('Tabelas sincronizadas com sucesso!');
+  })
+  .catch((err) => {
+    console.error('Erro ao sincronizar tabelas:', err);
+  });
 
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/adminRoute');
@@ -32,6 +46,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
