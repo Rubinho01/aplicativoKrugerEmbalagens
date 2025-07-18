@@ -5,6 +5,7 @@ const usuarioController = require('../controllers/usuarioController');
 const produtoController = require('../controllers/produtoController');
 
 
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -25,6 +26,7 @@ router.post('/registrar', usuarioController.registrar);
 router.get('/inicio', verificarSessao, usuarioController.gerarPedido);
 
 router.get('/produto/:id', verificarSessao, produtoController.carregarProduto);
+
 
 function verificarSessao(req, res, next){
   if(!req.session.userId) return res.redirect('/');

@@ -6,12 +6,7 @@ var logger = require('morgan');
 const session = require('express-session');
 require('dotenv').config();
 const sequelize = require('./config/database');
-const Usuario = require('./models/Usuario');
-const Admin = require('./models/admin');
-const produto = require('./models/produto');
-const pedido = require('./models/pedido');
-const itemPedido = require('./models/itemPedido');
-const index = require('./models/index');
+
 
 
 (async () => {
@@ -34,6 +29,7 @@ sequelize.sync()
 
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/adminRoute');
+var pedidoRouter = require('./routes/pedidoRoute');
 
 var app = express();
 
@@ -57,6 +53,7 @@ app.use(session({
 
 app.use('/', indexRouter);
 app.use('/admin', adminRouter);
+app.use('/pedido', pedidoRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
