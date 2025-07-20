@@ -30,6 +30,7 @@ sequelize.sync()
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/adminRoute');
 var pedidoRouter = require('./routes/pedidoRoute');
+var carrinhoRouter  = require('./routes/carrinhoRoute');
 
 var app = express();
 
@@ -54,6 +55,7 @@ app.use(session({
 app.use('/', indexRouter);
 app.use('/admin', adminRouter);
 app.use('/pedido', pedidoRouter);
+app.use('/carrinho', carrinhoRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
