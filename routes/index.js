@@ -27,6 +27,7 @@ router.get('/inicio', verificarSessao, usuarioController.gerarPedido);
 
 router.get('/produto/:id', verificarSessao, produtoController.carregarProduto);
 
+router.get('/logout', verificarSessao, usuarioController.sair);
 
 function verificarSessao(req, res, next){
   if(!req.session.userId) return res.redirect('/');
