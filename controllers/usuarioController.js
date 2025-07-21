@@ -35,3 +35,12 @@ exports.gerarPedido = async(req,res) => {
         res.status(404).send(error.message);
     }
 }
+
+exports.sair = async(req, res) => {
+    try {
+        req.session.destroy();
+        res.redirect('/');
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}

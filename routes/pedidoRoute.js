@@ -12,7 +12,7 @@ router.get('/carrinho', verificarSessao, carrinhoController.verCarrinho);
 
 router.get('/remover/:id', verificarSessao, carrinhoController.removerDoCarrinho);
 
-
+router.post('/atualizar', verificarSessao, carrinhoController.atualizarQuantidade);
 
 function verificarSessao(req, res, next){
   if(!req.session.userId) return res.redirect('/');

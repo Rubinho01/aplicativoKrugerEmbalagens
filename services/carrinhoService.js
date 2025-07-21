@@ -9,7 +9,6 @@ exports.carregarCarrinho = async(pedidoId) =>{
       }
     });
     const itens = pedido?.itens || [];
-    console.log(itens);
     return itens;
 }
 
@@ -23,5 +22,17 @@ exports.removerItem = async(pedidoId, id) => {
       id
     }
   });
-  
+}
+exports.alterarQuantidadeProduto = async(quantidade,pedidoId, id) => {
+  const existeNoPedido = await ItemPedido.findOne({where : {pedidoId, id}});
+  if(!existeNoPedido) throw new Error("Este produto não foi encontrado no seu pedido");
+  await ItemPedido.update({quantidade},
+    {
+      where: {
+        id
+      }
+    }
+  )
 };
+
+  
