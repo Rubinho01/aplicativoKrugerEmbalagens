@@ -10,6 +10,8 @@ router.post('/adicionar', verificarSessao, itemPedidoController.adicionarAoPedid
 
 router.get('/carrinho', verificarSessao, carrinhoController.verCarrinho);
 
+router.get('/remover/:id', verificarSessao, carrinhoController.removerDoCarrinho);
+
 
 
 function verificarSessao(req, res, next){
