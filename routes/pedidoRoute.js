@@ -14,6 +14,10 @@ router.get('/remover/:id', verificarSessao, carrinhoController.removerDoCarrinho
 
 router.post('/atualizar', verificarSessao, carrinhoController.atualizarQuantidade);
 
+router.get('/endereco', verificarSessao, async(req, res) =>{
+  res.render('endereco');
+})
+
 function verificarSessao(req, res, next){
   if(!req.session.userId) return res.redirect('/');
   else{

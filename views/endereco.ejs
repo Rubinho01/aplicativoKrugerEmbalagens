@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Endereço de Entrega | Krüger Embalagens</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+  <style>
+    body {
+      background-color: #f4f7ff;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .navbar {
+      background-color: #90aafc;
+    }
+
+    .navbar-brand, .navbar-nav .nav-link {
+      color: white;
+    }
+
+    .nav-link:hover {
+      color: #eaeaea;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="/inicio">Krüger Embalagens</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+      <ul class="navbar-nav d-flex align-items-center">
+        <li class="nav-item me-3">
+          <a class="nav-link position-relative" href="/pedido/carrinho">
+            <i class="bi bi-cart fs-5 text-white"></i>
+            <% if (typeof itens !== 'undefined' && itens.length > 0) { %>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"><%= itens.length %></span>
+            <% } %>
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown">
+            <i class="bi bi-person-circle fs-5 text-white"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+            <li><a class="dropdown-item" href="/usuario/editar">Editar informações</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" href="/logout">Sair</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- CONTEÚDO -->
+<div class="container mt-5">
+  <h3 class="mb-4">Informe seu Endereço de Entrega</h3>
+  <form action="/pedido/confirmar" method="POST" id="formEndereco">
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label for="cep" class="form-label">CEP</label>
+        <input type="text" id="cep" name="cep" class="form-control" maxlength="9" required onblur="buscarEndereco()">
+        <div id="erro-cep" class="text-danger mt-1"></div>
+      </div>
+      <div class="col-md-8">
+        <label for="rua" class="form-label">Rua</label>
+        <input type="text" id="rua" name="rua" class="form-control" required>
+      </div>
+    </div>
+    
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="bairro" class="form-label">Bairro</label>
+        <input type="text" id="bairro" name="bairro" class="form-control" required>
+      </div>
+      <div class="col-md-4">
+        <label for="cidade" class="form-label">Cidade</label>
+        <input type="text" id="cidade" name="cidade" class="form-control" readonly required>
+      </div>
+      <div class="col-md-2">
+        <label for="numero" class="form-label">Número</label>
+        <input type="text" id="numero" name="numero" class="form-control" required>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="complemento" class="form-label">Complemento</label>
+      <input type="text" id="complemento" name="complemento" class="form-control">
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <a href="/pedido/carrinho" class="btn btn-secondary">Voltar ao Carrinho</a>
+      <button type="submit" class="btn btn-primary">Confirmar Endereço</button>
+    </div>
+  </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  const cidadePermitida = 'Joinville';
+
+  function buscarEndereco() {
+    const cep = document.getElementById('cep').value.replace(/\D/g, '');
+    const erroDiv = document.getElementById('erro-cep');
+
+    if (cep.length !== 8) {
+      erroDiv.textContent = 'CEP inválido.';
+      return;
+    }
+
+    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.erro) {
+          erroDiv.textContent = 'CEP não encontrado.';
+        } else if (data.localidade !== cidadePermitida) {
+          erroDiv.textContent = `Atualmente entregamos apenas em ${cidadePermitida}.`;
+        } else {
+          erroDiv.textContent = '';
+          document.getElementById('rua').value = data.logradouro;
+          document.getElementById('bairro').value = data.bairro;
+          document.getElementById('cidade').value = data.localidade;
+        }
+      })
+      .catch(() => {
+        erroDiv.textContent = 'Erro ao consultar o CEP.';
+      });
+  }
+</script>
+
+</body>
+</html>
