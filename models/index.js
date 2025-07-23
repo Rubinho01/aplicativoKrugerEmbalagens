@@ -8,7 +8,7 @@ const Produto = require('./produto')(sequelize, DataTypes);
 const Pedido = require('./pedido')(sequelize, DataTypes);
 const ItemPedido = require('./itemPedido')(sequelize, DataTypes);
 const Endereco = require('./Endereco')(sequelize, DataTypes);
-
+const Bairro = require('./bairro')(sequelize, DataTypes);
 // Associações
 Usuario.hasMany(Pedido, { foreignKey: 'usuarioId' });
 Pedido.belongsTo(Usuario, { foreignKey: 'usuarioId' });
@@ -29,5 +29,6 @@ module.exports = {
   Produto,
   Pedido,
   ItemPedido,
-  Endereco
+  Endereco,
+  Bairro
 };

@@ -21,6 +21,10 @@ router.get('/endereco', verificarSessao, async(req, res) =>{
 
 router.post('/confirmarEndereco', verificarSessao, pedidoController.atribuirEnderecoAoPedido);
 
+router.get('/checkout', verificarSessao, pedidoController.verificarPedido);
+
+router.post('/finalizar', verificarSessao, pedidoController.finalizarPedido);
+
 function verificarSessao(req, res, next){
   if(!req.session.userId) return res.redirect('/');
   else{
