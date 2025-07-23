@@ -7,6 +7,10 @@ module.exports = (sequelize, DataTypes) => {
     data: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
+    },
+    total: {
+      type: DataTypes.FLOAT,
+      allowNull: true
     }
   });
 
