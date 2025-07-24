@@ -31,7 +31,6 @@ exports.adicionar = (req, res) => {
     try {
       const { nome, preco, descricao, situacao } = req.body;
       const fotos = req.files.map(file => file.filename);
-      console.log("nome: " + nome,"preco: " +  preco,"desc: " +  descricao,"situacao: " +  situacao,"fotos: " +  fotos);
       await produtoService.addProduto({ nome, preco, descricao, situacao, fotos });
       
       res.redirect('/admin/dashboard');

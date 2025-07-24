@@ -28,6 +28,8 @@ router.get('/editarTaxa/:id', verificarAdmin, bairroController.CarregarBairro);
 
 router.post('/editarTaxa', verificarAdmin, bairroController.atualizarTaxaBairro);
 
+router.get('/editarItens', verificarAdmin, adminController.carregarProdutosParaEditar);
+
 
 function verificarAdmin(req, res, next) {
   if(!req.session.adminId) return res.redirect('/admin');
