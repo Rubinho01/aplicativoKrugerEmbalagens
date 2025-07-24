@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const adminController = require('../controllers/adminController');
 const produtoController = require('../controllers/produtoController');
+const bairroController = require('../controllers/bairroController');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -19,7 +20,13 @@ router.get('/novo-item', verificarAdmin, (req, res) => {
   res.render('admin/novoItem');
 })
 
-router.post('/novo-item', verificarAdmin, produtoController.adicionar)
+router.post('/novo-item', verificarAdmin, produtoController.adicionar);
+
+router.get('/taxas', verificarAdmin, bairroController.buscarBairros);
+
+router.get('/editarTaxa/:id', verificarAdmin, bairroController.CarregarBairro);
+
+router.post('/editarTaxa', verificarAdmin, bairroController.atualizarTaxaBairro);
 
 
 function verificarAdmin(req, res, next) {
