@@ -18,3 +18,9 @@ exports.encontrarProduto = async(id) => {
   return produto;
   
 }
+
+exports.buscarTodosProdutos = async() => {
+  const produtos = await Produto.findAll();
+  if(!produtos) throw new Error("Erro ao procurar os produtos no Banco de Dados");
+  return produtos;
+}

@@ -19,7 +19,7 @@ const sequelize = require('./config/database');
   }
 })();
 
-sequelize.sync({ alter: true })
+sequelize.sync()
   .then(() => {
     console.log('Tabelas sincronizadas com sucesso!');
   })
