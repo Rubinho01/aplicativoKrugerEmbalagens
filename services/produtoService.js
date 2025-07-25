@@ -34,3 +34,9 @@ exports.editarProduto = async (id,nome,preco,descricao,situacao,foto1) => {
   if(situacao!= produto.situacao) await Produto.update({situacao},{where: {id}});
   if(foto1!= produto.foto1) await Produto.update({foto1},{where: {id}});
 }
+
+exports.excluirProduto = async (id) => {
+  const produto = await produtoService.encontrarProduto(id);
+  await Produto.destroy({where: {id: produto.id}});
+  
+}

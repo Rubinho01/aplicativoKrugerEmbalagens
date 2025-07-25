@@ -68,3 +68,13 @@ exports.editarProduto = async (req,res) => {
   });
   
 }
+
+exports.excluirProduto = async (req, res) => {
+  try {
+    const {id} = req.params;
+    await produtoService.excluirProduto(id);
+    res.redirect('/admin/editarItens');
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+}

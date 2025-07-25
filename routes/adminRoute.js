@@ -34,6 +34,7 @@ router.get('/editarItem/:id', verificarAdmin, adminController.carregarProdutoPar
 
 router.post('/editarItem', verificarAdmin, produtoController.editarProduto);
 
+router.get('/excluirItem/:id', verificarAdmin, produtoController.excluirProduto);
 function verificarAdmin(req, res, next) {
   if(!req.session.adminId) return res.redirect('/admin');
   else next();
