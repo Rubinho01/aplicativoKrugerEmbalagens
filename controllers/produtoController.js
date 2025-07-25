@@ -51,3 +51,20 @@ exports.carregarProduto = async(req, res) => {
   }
 
 }
+
+exports.editarProduto = async (req,res) => {
+  upload.single('foto1')(req, res, async function(err) {
+    if (err) return res.status(400).send(err.message);
+
+    try {
+      const { id, nome, preco, descricao, situacao, } = req.body;
+      const foto1 = req.file?.filename;
+      await produtoService.editarProduto(id, nome, preco, descricao, situacao, foto1 );
+      
+      res.redirect(`/admin/editarItem/${id}`);
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+  });
+  
+}
