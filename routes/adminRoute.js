@@ -30,7 +30,11 @@ router.post('/editarTaxa', verificarAdmin, bairroController.atualizarTaxaBairro)
 
 router.get('/editarItens', verificarAdmin, adminController.carregarProdutosParaEditar);
 
+router.get('/editarItem/:id', verificarAdmin, adminController.carregarProdutoParaEditar);
 
+router.post('/editarItem', verificarAdmin, produtoController.editarProduto);
+
+router.get('/excluirItem/:id', verificarAdmin, produtoController.excluirProduto);
 function verificarAdmin(req, res, next) {
   if(!req.session.adminId) return res.redirect('/admin');
   else next();

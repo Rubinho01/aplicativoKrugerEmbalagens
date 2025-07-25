@@ -21,3 +21,13 @@ exports.carregarProdutosParaEditar = async(req, res) =>{
         res.status(500).send(error.message);
     }
 }
+
+exports.carregarProdutoParaEditar = async(req, res) => {
+    try {
+        const {id} = req.params;
+        const produto = await produtoService.encontrarProduto(id);
+        res.render("admin/produto", {produto});
+    } catch (error) {
+        
+    }
+}
