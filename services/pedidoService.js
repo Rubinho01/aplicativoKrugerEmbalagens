@@ -1,8 +1,9 @@
-const {Pedido, Usuario, Endereco} = require('../models');
+const {Pedido, Usuario, Endereco, ItemPedido, Produto} = require('../models');
 const carrinhoService = require('./carrinhoService');
 const bairroService = require('./bairroService');
 const enderecoService = require('./enderecoService');
 const pedidoService = require('./pedidoService');
+
 
 
 exports.encontrarPedidoPK = async (id) => {
@@ -53,7 +54,17 @@ exports.finalizarPedido = async(id) => {
 }
 
 exports.buscarProcessando = async () => {
-    const pedidosProcessando = await Pedido.findAll({where: {status: "PROCESSANDO"},include : [{model: Usuario},{model: Endereco, as: 'endereco'}]});
-    console.log(pedidosProcessando);  
+    const pedidosProcessando = await Pedido.findAll({where: {status: "PROCESSANDO"},include: [
+  { model: Usuario },
+  { model: Endereco, as: 'endereco' },
+  {
+    model: ItemPedido,
+    as: 'itens',
+    include: {
+      model: Produto
+    }
+  }
+]});
+console.log(JSON.stringify(pedidosProcessando, null, 2));
     if(pedidosProcessando) return pedidosProcessando || [];
 }
