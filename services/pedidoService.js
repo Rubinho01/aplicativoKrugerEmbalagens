@@ -1,9 +1,8 @@
-const {Pedido} = require('../models');
+const {Pedido, Usuario, Endereco} = require('../models');
 const carrinhoService = require('./carrinhoService');
 const bairroService = require('./bairroService');
 const enderecoService = require('./enderecoService');
 const pedidoService = require('./pedidoService');
-const { where } = require('sequelize');
 
 
 exports.encontrarPedidoPK = async (id) => {
@@ -51,4 +50,10 @@ exports.finalizarPedido = async(id) => {
     await Pedido.update({total: total.toFixed(2)},{where: {id}});
     await Pedido.update({status: "PROCESSANDO"},{where: {id}});
 
+}
+
+exports.buscarProcessando = async () => {
+    const pedidosProcessando = await Pedido.findAll({where: {status: "PROCESSANDO"},include : [{model: Usuario},{model: Endereco, as: 'endereco'}]});
+    console.log(pedidosProcessando);  
+    if(pedidosProcessando) return pedidosProcessando || [];
 }

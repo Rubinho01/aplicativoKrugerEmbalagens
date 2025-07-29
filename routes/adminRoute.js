@@ -11,10 +11,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/login',  adminController.entrarAdmin);
 
-router.get('/dashboard',verificarAdmin,  (req, res) => {
-  res.render('admin/dashboard');
-})
-
+router.get('/dashboard',verificarAdmin, adminController.carregarDashboard);
 
 router.get('/novo-item', verificarAdmin, (req, res) => {
   res.render('admin/novoItem');
