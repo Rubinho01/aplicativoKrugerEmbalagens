@@ -7,7 +7,13 @@ const pedidoService = require('./pedidoService');
 
 
 exports.encontrarPedidoPK = async (id) => {
-    const pedidoEncontrado = await Pedido.findByPk(id);
+    const pedidoEncontrado = await Pedido.findByPk(id, {
+        include: [{
+        model: Endereco,
+        as: "endereco",
+        attributes: ['rua', 'numero', 'bairro']
+    }]
+});
     if(!pedidoEncontrado) throw new Error("Erro ao encontrar o pedido no banco de dados");
     return pedidoEncontrado;
     
@@ -71,6 +77,6 @@ console.log(JSON.stringify(pedidosProcessando, null, 2));
 
 exports.verificarPedidoUsuarioProcessando = async(usuarioId) =>{
     const pedidoProcessando = await Pedido.findOne({where : {status: 'PROCESSANDO', usuarioId}});
-    if(pedidoProcessando) return true;
+    if(pedidoProcessando) return pedidoProcessando;
     else return false;
 }

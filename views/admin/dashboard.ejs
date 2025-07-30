@@ -100,8 +100,8 @@
             <p><em>Produto não disponível</em></p>
           <% } %>
         <% }) %>
-        <button class="btn btn-success"><i class="bi bi-check-circle"></i> Aceitar</button>
-        <button class="btn btn-danger"><i class="bi bi-x-circle"></i> Recusar</button>
+        <a href="aceitarPedido/<%= pedido.id %>" class="btn btn-success"><i class="bi bi-check-circle"></i> Aceitar</a>
+        <a href="recusarPedido/<%= pedido.id %>" class="btn btn-danger"><i class="bi bi-x-circle"></i> Recusar</a>
       </div>
       <% }) %>
 
