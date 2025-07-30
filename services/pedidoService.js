@@ -68,3 +68,9 @@ exports.buscarProcessando = async () => {
 console.log(JSON.stringify(pedidosProcessando, null, 2));
     if(pedidosProcessando) return pedidosProcessando || [];
 }
+
+exports.verificarPedidoUsuarioProcessando = async(usuarioId) =>{
+    const pedidoProcessando = await Pedido.findOne({where : {status: 'PROCESSANDO', usuarioId}});
+    if(pedidoProcessando) return true;
+    else return false;
+}
