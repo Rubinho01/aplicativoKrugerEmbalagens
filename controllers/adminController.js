@@ -1,5 +1,6 @@
 const adminService = require('../services/adminService');
 const produtoService = require('../services/produtoService');
+const pedidoService = require('../services/pedidoService');
 
 exports.entrarAdmin = async (req, res) => {
     const {nome, senha} = req.body
@@ -9,6 +10,16 @@ exports.entrarAdmin = async (req, res) => {
         res.redirect('/admin/dashboard');
     } catch (error) {
         res.status(401).send(error.message);
+    }
+    
+}
+
+exports.carregarDashboard = async (req, res) => {
+    try {
+        const pedidosProcessando = await pedidoService.buscarProcessando();
+        res.render('admin/dashboard', {pedidosProcessando});
+    } catch (error) {
+        res.status(500).send(error.message);
     }
     
 }

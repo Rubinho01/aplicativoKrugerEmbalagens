@@ -89,19 +89,22 @@
     <div class="content-area">
       <h4 class="mb-4">Pedidos em Processamento</h4>
 
+      <% pedidosProcessando.forEach(pedido => { %>
       <div class="pedido-card">
-        <h6>Pedido #1023 - João da Silva</h6>
-        <p><strong>Item:</strong> Caixa Personalizada • <strong>Quantidade:</strong> 300 unidades</p>
+        <h6>Pedido #<%= pedido.id %> - <%= pedido.Usuario.nome %></h6>
+        <p><strong>Valor Total:</strong> <%= pedido.total %> <strong>Bairro de Entrega:</strong> <%= pedido.endereco.bairro %> </p>
+        <% pedido.itens.forEach(item => { %>
+          <% if (item.produto) { %>
+              <p><%= item.produto.nome %> <strong>Quantidade: </strong> <%= item.quantidade %></p>
+          <% } else { %>
+            <p><em>Produto não disponível</em></p>
+          <% } %>
+        <% }) %>
         <button class="btn btn-success"><i class="bi bi-check-circle"></i> Aceitar</button>
         <button class="btn btn-danger"><i class="bi bi-x-circle"></i> Recusar</button>
       </div>
+      <% }) %>
 
-      <div class="pedido-card">
-        <h6>Pedido #1024 - Maria Oliveira</h6>
-        <p><strong>Item:</strong> Sacolas Kraft • <strong>Quantidade:</strong> 150 unidades</p>
-        <button class="btn btn-success"><i class="bi bi-check-circle"></i> Aceitar</button>
-        <button class="btn btn-danger"><i class="bi bi-x-circle"></i> Recusar</button>
-      </div>
     </div>
   </div>
 
