@@ -9,11 +9,15 @@ const { Where } = require('sequelize/lib/utils');
 
 exports.encontrarPedidoPK = async (id) => {
     const pedidoEncontrado = await Pedido.findByPk(id, {
-        include: [{
-        model: Endereco,
-        as: "endereco",
-        attributes: ['rua', 'numero', 'bairro']
-    }]
+        include: [{ model: Usuario },
+        { model: Endereco, as: 'endereco' },
+        {
+            model: ItemPedido,
+            as: 'itens',
+            include: {
+            model: Produto
+            }
+        },{model: Usuario}]
 });
     if(!pedidoEncontrado) throw new Error("Erro ao encontrar o pedido no banco de dados");
     return pedidoEncontrado;
@@ -82,6 +86,12 @@ exports.verificarPedidoUsuarioProcessando = async(usuarioId) =>{
     else return false;
 }
 
+exports.tornarPedidoAprovado = async (pedidoId) => {
+    const pedido = await pedidoService.encontrarPedidoPK(pedidoId);
+    await Pedido.update({status: "APROVADO"}, {where: {id: pedido.id}});
+    const pedidoAfter = await pedidoService.encontrarPedidoPK(pedidoId);
+    if(pedidoAfter.status !== "APROVADO") throw new Error("ERRO AO ACEITAR PEDIDO");
+}
 
 exports.tornarPedidoRecusado = async(pedidoId) =>{
     const pedido = await pedidoService.encontrarPedidoPK(pedidoId);
