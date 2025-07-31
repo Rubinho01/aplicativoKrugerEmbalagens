@@ -3,7 +3,7 @@ var router = express.Router();
 const Usuario = require('../models/Usuario');
 const usuarioController = require('../controllers/usuarioController');
 const produtoController = require('../controllers/produtoController');
-
+const verificarPedidoProcessandoMiddleware = require('../middlewares/verificarPedidoProcessando');
 
 
 /* GET home page. */
@@ -23,7 +23,7 @@ router.get('/cadastro', (req,res) =>{
 
 router.post('/registrar', usuarioController.registrar);
 
-router.get('/inicio', verificarSessao, usuarioController.gerarPedido);
+router.get('/inicio', verificarSessao, verificarPedidoProcessandoMiddleware, usuarioController.gerarPedido);
 
 router.get('/produto/:id', verificarSessao, produtoController.carregarProduto);
 

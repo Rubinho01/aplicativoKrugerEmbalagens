@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Acompanhamento do Pedido | Krüger Embalagens</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f4f7ff;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .navbar {
+      background-color: #90aafc;
+    }
+
+    .navbar-brand, .navbar-nav .nav-link {
+      color: white;
+    }
+
+    .nav-link:hover {
+      color: #eaeaea;
+    }
+
+    .status-card {
+      border: none;
+      border-radius: 15px;
+      padding: 40px 20px;
+      text-align: center;
+      color: white;
+    }
+
+    .status-processando {
+      background-color: #f0ad4e;
+    }
+
+    .status-aceito {
+      background-color: #5cb85c;
+    }
+
+    .refresh-info {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="/inicio">Krüger Embalagens</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+      <ul class="navbar-nav d-flex align-items-center">
+        <li class="nav-item me-3">
+          <a class="nav-link position-relative" href="/pedido/carrinho">
+            <i class="bi bi-cart fs-5 text-white"></i>
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown">
+            <i class="bi bi-person-circle fs-5 text-white"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+            <li><a class="dropdown-item" href="/usuario/editar">Editar informações</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" href="/logout">Sair</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+
+      <div class="card status-card 
+        <% if (pedido.status === 'PROCESSANDO') { %> status-processando 
+        <% } else if (pedido.status === 'APROVADO') { %> status-aceito 
+        <% } %>">
+        
+        <h4 class="mb-3">
+          <% if (pedido.status === 'PROCESSANDO') { %>
+            Seu pedido está em análise!
+          <% } else if (pedido.status === 'APROVADO') { %>
+            Pedido aceito! Logo entraremos em contato por telefone.
+          <% } else { %>
+            Status: <%= pedido.status %>
+          <% } %>
+        </h4>
+
+        <p>Fique tranquilo(a), estamos cuidando do seu pedido com carinho.</p>
+
+        <hr class="my-4 bg-white opacity-50">
+
+        <div class="text-start">
+            <% if (pedido.status === 'PROCESSANDO' || pedido.status === 'APROVADO') { %>
+          <p><strong>Valor total do pedido:</strong> R$ <%= pedido.total.toFixed(2) %></p>
+          <p><strong>Entrega para:</strong> 
+            Rua <%= pedido.endereco.rua %>, nº <%= pedido.endereco.numero %>, 
+            Bairro <%= pedido.endereco.bairro %>
+          </p>
+          <%} else { %>
+            <p style="color: black;" >Por favor, finalize o seu pedido na página de <a href="/pedido/carrinho"> carrinho </a> para verificar o andamento do seu pedido</p>
+            <% } %>
+        </div>
+
+        <div class="refresh-info text-center">
+          A página será atualizada automaticamente.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  // Auto-refresh a cada 15 segundos
+  setInterval(() => {
+    window.location.reload();
+  }, 15000);
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

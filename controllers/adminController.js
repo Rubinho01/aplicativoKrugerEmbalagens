@@ -42,3 +42,29 @@ exports.carregarProdutoParaEditar = async(req, res) => {
         
     }
 }
+
+exports.recusarPedido = async (req, res) => {
+    try {
+        const pedidoId = req.params.id;
+        await pedidoService.tornarPedidoRecusado(pedidoId);
+        res.redirect('/admin/dashboard');
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+    
+}
+
+
+exports.aceitarPedido = async (req, res) => {
+    try {
+        const pedidoId = req.params.id;
+        const pedido = await pedidoService.encontrarPedidoPK(pedidoId);
+        await pedidoService.tornarPedidoAprovado(pedido.id);
+
+        res.render('admin/prepararPedido', {pedido});
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+    
+}

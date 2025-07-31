@@ -3,11 +3,22 @@ const carrinhoService = require('./carrinhoService');
 const bairroService = require('./bairroService');
 const enderecoService = require('./enderecoService');
 const pedidoService = require('./pedidoService');
+const { Where } = require('sequelize/lib/utils');
 
 
 
 exports.encontrarPedidoPK = async (id) => {
-    const pedidoEncontrado = await Pedido.findByPk(id);
+    const pedidoEncontrado = await Pedido.findByPk(id, {
+        include: [{ model: Usuario },
+        { model: Endereco, as: 'endereco' },
+        {
+            model: ItemPedido,
+            as: 'itens',
+            include: {
+            model: Produto
+            }
+        },{model: Usuario}]
+});
     if(!pedidoEncontrado) throw new Error("Erro ao encontrar o pedido no banco de dados");
     return pedidoEncontrado;
     
@@ -67,4 +78,24 @@ exports.buscarProcessando = async () => {
 ]});
 console.log(JSON.stringify(pedidosProcessando, null, 2));
     if(pedidosProcessando) return pedidosProcessando || [];
+}
+
+exports.verificarPedidoUsuarioProcessando = async(usuarioId) =>{
+    const pedidoProcessando = await Pedido.findOne({where : {status: 'PROCESSANDO', usuarioId}});
+    if(pedidoProcessando) return pedidoProcessando;
+    else return false;
+}
+
+exports.tornarPedidoAprovado = async (pedidoId) => {
+    const pedido = await pedidoService.encontrarPedidoPK(pedidoId);
+    await Pedido.update({status: "APROVADO"}, {where: {id: pedido.id}});
+    const pedidoAfter = await pedidoService.encontrarPedidoPK(pedidoId);
+    if(pedidoAfter.status !== "APROVADO") throw new Error("ERRO AO ACEITAR PEDIDO");
+}
+
+exports.tornarPedidoRecusado = async(pedidoId) =>{
+    const pedido = await pedidoService.encontrarPedidoPK(pedidoId);
+    await Pedido.update({status: "RECUSADO"}, {where: {id: pedido.id}});
+    const pedidoAfter = await pedidoService.encontrarPedidoPK(pedidoId);
+    if(pedidoAfter.status !== "RECUSADO") throw new Error("ERRO AO RECUSAR PEDIDO"); 
 }

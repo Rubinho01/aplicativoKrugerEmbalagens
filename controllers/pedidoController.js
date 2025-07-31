@@ -33,8 +33,19 @@ exports.verificarPedido = async(req, res) => {
 exports.finalizarPedido = async(req, res) => {
     try {
         await pedidoService.finalizarPedido(req.session.pedidoId);
-        res.status(200).send("Pedido Finalizado Com sucesso!");
+        res.redirect('/pedido/verificarStatus');
     } catch(error) {
         res.status(500).send(error.message);
     }
 };
+
+exports.verificarStatusPedido = async (req,res) => {
+    try {
+        const pedido = await pedidoService.encontrarPedidoPK(req.session.pedidoId);
+        console.log('usuarioId da sessão:', req.session.userId);
+        res.render("verificarStatus",{pedido});
+    } catch (error) {
+        
+    }
+    
+}

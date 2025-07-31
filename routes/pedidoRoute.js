@@ -25,6 +25,8 @@ router.get('/checkout', verificarSessao, pedidoController.verificarPedido);
 
 router.post('/finalizar', verificarSessao, pedidoController.finalizarPedido);
 
+router.get('/verificarStatus', verificarSessao, pedidoController.verificarStatusPedido);
+
 function verificarSessao(req, res, next){
   if(!req.session.userId) return res.redirect('/');
   else{
