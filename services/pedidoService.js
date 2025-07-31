@@ -3,6 +3,7 @@ const carrinhoService = require('./carrinhoService');
 const bairroService = require('./bairroService');
 const enderecoService = require('./enderecoService');
 const pedidoService = require('./pedidoService');
+const { Where } = require('sequelize/lib/utils');
 
 
 
@@ -79,4 +80,12 @@ exports.verificarPedidoUsuarioProcessando = async(usuarioId) =>{
     const pedidoProcessando = await Pedido.findOne({where : {status: 'PROCESSANDO', usuarioId}});
     if(pedidoProcessando) return pedidoProcessando;
     else return false;
+}
+
+
+exports.tornarPedidoRecusado = async(pedidoId) =>{
+    const pedido = await pedidoService.encontrarPedidoPK(pedidoId);
+    await Pedido.update({status: "RECUSADO"}, {where: {id: pedido.id}});
+    const pedidoAfter = await pedidoService.encontrarPedidoPK(pedidoId);
+    if(pedidoAfter.status !== "RECUSADO") throw new Error("ERRO AO RECUSAR PEDIDO"); 
 }

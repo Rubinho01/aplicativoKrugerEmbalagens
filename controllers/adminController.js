@@ -42,3 +42,14 @@ exports.carregarProdutoParaEditar = async(req, res) => {
         
     }
 }
+
+exports.recusarPedido = async (req, res) => {
+    try {
+        const pedidoId = req.params.id;
+        await pedidoService.tornarPedidoRecusado(pedidoId);
+        res.redirect('/admin/dashboard');
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+    
+}

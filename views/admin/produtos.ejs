@@ -97,7 +97,7 @@
             <img src="/img/sem-foto.png" class="card-img-top" alt="Sem imagem">
           <% } %>
           <div class="card-body d-flex flex-column">
-            <h5 class="card-title"><%= produto.nome %></h5>
+            <h5 class="card-title"><% if(produto.situacao === 'inativo'){ %> <p style="text-decoration: underline;" >(inativo) </p><% } %> <%= produto.nome %></h5>
             <p class="card-text text-muted mb-2">R$ <%= produto.preco.toFixed(2) %></p>
             <a href="/admin/editarItem/<%= produto.id %>" class="btn btn-warning mt-auto">Editar Produto</a>
           </div>
