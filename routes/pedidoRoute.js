@@ -4,26 +4,26 @@ const itemPedidoController = require('../controllers/itemPedidoController');
 const carrinhoController  = require('../controllers/carrinhoController');
 const pedidoController = require('../controllers/pedidoController');
 const pedido = require('../models/pedido');
+const verificarPedidoProcessandoMiddleware = require('../middlewares/verificarPedidoProcessando');
 
 
-
-router.post('/adicionar', verificarSessao, itemPedidoController.adicionarAoPedido);
+router.post('/adicionar', verificarSessao, verificarPedidoProcessandoMiddleware, itemPedidoController.adicionarAoPedido);
 
 router.get('/carrinho', verificarSessao, carrinhoController.verCarrinho);
 
-router.get('/remover/:id', verificarSessao, carrinhoController.removerDoCarrinho);
+router.get('/remover/:id', verificarSessao, verificarPedidoProcessandoMiddleware, carrinhoController.removerDoCarrinho);
 
-router.post('/atualizar', verificarSessao, carrinhoController.atualizarQuantidade);
+router.post('/atualizar', verificarSessao, verificarPedidoProcessandoMiddleware, carrinhoController.atualizarQuantidade);
 
-router.get('/endereco', verificarSessao, async(req, res) =>{
+router.get('/endereco', verificarSessao, verificarPedidoProcessandoMiddleware, async(req, res) =>{
   res.render('endereco');
 });
 
-router.post('/confirmarEndereco', verificarSessao, pedidoController.atribuirEnderecoAoPedido);
+router.post('/confirmarEndereco', verificarSessao, verificarPedidoProcessandoMiddleware, pedidoController.atribuirEnderecoAoPedido);
 
-router.get('/checkout', verificarSessao, pedidoController.verificarPedido);
+router.get('/checkout', verificarSessao, verificarPedidoProcessandoMiddleware, pedidoController.verificarPedido);
 
-router.post('/finalizar', verificarSessao, pedidoController.finalizarPedido);
+router.post('/finalizar', verificarSessao, verificarPedidoProcessandoMiddleware, pedidoController.finalizarPedido);
 
 router.get('/verificarStatus', verificarSessao, pedidoController.verificarStatusPedido);
 
