@@ -90,6 +90,7 @@
 
   <div class="row" id="listaProdutos">
     <% produtos.forEach(produto => { %>
+      <% if (produto.situacao !== "inativo") { %>
       <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4 produto-item">
         <div class="card card-produto h-100">
           <% if (produto.foto1) { %>
@@ -104,7 +105,7 @@
           </div>
         </div>
       </div>
-    <% }); %>
+    <% }}); %>
   </div>
 </div>
 
