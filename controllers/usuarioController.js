@@ -44,3 +44,24 @@ exports.sair = async(req, res) => {
         res.status(500).send(error.message);
     }
 }
+
+exports.carregarEditarUsuario = async (req, res) => {
+    try {
+        const usuario = await usuarioService.buscarPorPk(req.session.userId);
+        res.set('Cache-Control', 'no-store');
+        res.render('editarUsuario', {usuario});
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+exports.editarUsuario = async (req,res) => {
+    const { senhaAtual, senhaNova, emailNovo, telefoneNovo } = req.body;
+    const usuarioId = req.session.userId;
+    try {
+        await usuarioService.editarUsuario(usuarioId, senhaAtual, senhaNova, emailNovo, telefoneNovo);
+        res.redirect('/usuario/editar');
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}

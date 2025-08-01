@@ -36,6 +36,10 @@
       background-color: #f0ad4e;
     }
 
+    .status-recusado {
+      background-color: rgb(255, 112, 112);
+    }
+
     .status-aceito {
       background-color: #5cb85c;
     }
@@ -86,24 +90,28 @@
       <div class="card status-card 
         <% if (pedido.status === 'PROCESSANDO') { %> status-processando 
         <% } else if (pedido.status === 'APROVADO') { %> status-aceito 
-        <% } %>">
+        <% } else if (pedido.status === 'RECUSADO') { %> status-recusado
+        <% } %>  
+        ">
         
         <h4 class="mb-3">
           <% if (pedido.status === 'PROCESSANDO') { %>
             Seu pedido está em análise!
+            <p>Fique tranquilo(a), estamos cuidando do seu pedido com carinho.</p>
           <% } else if (pedido.status === 'APROVADO') { %>
             Pedido aceito! Logo entraremos em contato por telefone.
-          <% } else { %>
+            <p>Fique tranquilo(a), estamos cuidando do seu pedido com carinho.</p>
+          <% } else if (pedido.status === 'RECUSADO'){ %>
+            Pedido recusado! se você acha que isso foi um erro, favor entrar em contato via whatsapp
+          <% } else {%>
             Status: <%= pedido.status %>
           <% } %>
         </h4>
 
-        <p>Fique tranquilo(a), estamos cuidando do seu pedido com carinho.</p>
-
         <hr class="my-4 bg-white opacity-50">
 
         <div class="text-start">
-            <% if (pedido.status === 'PROCESSANDO' || pedido.status === 'APROVADO') { %>
+            <% if (pedido.status === 'PROCESSANDO' || pedido.status === 'APROVADO' || pedido.status === 'RECUSADO') { %>
           <p><strong>Valor total do pedido:</strong> R$ <%= pedido.total.toFixed(2) %></p>
           <p><strong>Entrega para:</strong> 
             Rua <%= pedido.endereco.rua %>, nº <%= pedido.endereco.numero %>, 
