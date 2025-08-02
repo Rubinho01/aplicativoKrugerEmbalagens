@@ -38,6 +38,8 @@ router.get('/recusarPedido/:id', verificarAdmin, adminController.recusarPedido);
 
 router.get('/aceitarPedido/:id', verificarAdmin, adminController.aceitarPedido);
 
+router.get('/pedidos-finalizados', verificarAdmin, adminController.carregarHistoricoPedidos);
+
 function verificarAdmin(req, res, next) {
   if(!req.session.adminId) return res.redirect('/admin');
   else next();
