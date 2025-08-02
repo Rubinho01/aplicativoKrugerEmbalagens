@@ -68,3 +68,12 @@ exports.aceitarPedido = async (req, res) => {
     }
     
 }
+
+exports.carregarHistoricoPedidos = async (req, res) => {
+    try {
+        const pedidosFinalizados = await pedidoService.buscarTodosRecusadoEAprovado();
+        res.render('admin/historicoPedidos', {pedidosFinalizados});
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}

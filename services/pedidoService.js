@@ -99,3 +99,19 @@ exports.tornarPedidoRecusado = async(pedidoId) =>{
     const pedidoAfter = await pedidoService.encontrarPedidoPK(pedidoId);
     if(pedidoAfter.status !== "RECUSADO") throw new Error("ERRO AO RECUSAR PEDIDO"); 
 }
+
+
+exports.buscarTodosRecusadoEAprovado = async () => {
+    const pedidosRecusadoEAprovado = await Pedido.findAll({where: {status: "RECUSADO", status: "APROVADO"},include: [
+  { model: Usuario },
+  { model: Endereco, as: 'endereco' },
+  {
+    model: ItemPedido,
+    as: 'itens',
+    include: {
+      model: Produto
+    }
+  }
+]});
+if(pedidosRecusadoEAprovado) return pedidosRecusadoEAprovado || [];
+}
