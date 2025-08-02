@@ -49,7 +49,11 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false } // se estiver rodando localmente com HTTP
+  cookie: {
+  secure: true,     // só envia via HTTPS
+  httpOnly: true,   // impede acesso via JS
+  sameSite: 'lax'   // reduz risco de CSRF, sem quebrar navegação normal
+  }
 }));
 
 app.use('/', indexRouter);
