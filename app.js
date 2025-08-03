@@ -13,19 +13,12 @@ const sequelize = require('./config/database');
   try {
     await sequelize.authenticate();
     console.log('Banco conectado!');
-    await sequelize.sync();
+    await sequelize.sync({ alter: true });
+    console.log('Tabelas sincronizadas com sucesso!');
   } catch (err) {
-    console.error('Erro ao conectar:', err);
+    console.error('Erro ao conectar/sincronizar:', err);
   }
 })();
-
-sequelize.sync()
-  .then(() => {
-    console.log('Tabelas sincronizadas com sucesso!');
-  })
-  .catch((err) => {
-    console.error('Erro ao sincronizar tabelas:', err);
-  });
 
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/adminRoute');
@@ -50,9 +43,9 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   cookie: {
-  secure: true,     // só envia via HTTPS
-  httpOnly: true,   // impede acesso via JS
-  sameSite: 'lax'   // reduz risco de CSRF, sem quebrar navegação normal
+  secure: true,     
+  httpOnly: true,   
+  sameSite: 'lax'   
   }
 }));
 
