@@ -38,14 +38,31 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+const pgSession = require('connect-pg-simple')(session);
+const { Pool } = require('pg');
+
+// Crie o pool com as mesmas infos do seu Sequelize (Render)
+const pool = new Pool({
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
+});
+
 app.use(session({
-  secret: process.env.SESSION_SECRET,
+  store: new pgSession({
+    pool: pool,
+    tableName: 'session',
+  }),
+  secret: process.env.SESSION_SECRET || 'fallback-secret',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
-  secure: true,     
-  httpOnly: true,   
-  sameSite: 'lax'   
+    secure: isProduction,
+    httpOnly: true,
+    sameSite: 'lax'
   }
 }));
 
