@@ -33,9 +33,9 @@ exports.adicionar = (req, res) => {
       const fotos = req.files.map(file => file.filename);
       await produtoService.addProduto({ nome, preco, descricao, situacao, fotos });
       
-      res.redirect('/admin/dashboard');
+      return res.redirect('/admin/dashboard');
     } catch (error) {
-      res.status(500).send(error.message);
+      return res.status(500).send(error.message);
     }
   });
 }
@@ -45,9 +45,9 @@ exports.carregarProduto = async(req, res) => {
     const {id} = req.params;
     const produto = await produtoService.encontrarProduto(id);
     console.log(produto);
-    res.render('produto/verProduto', {produto});
+    return res.render('produto/verProduto', {produto});
   } catch (error) {
-    res.status(500).send(error.message);
+    return res.status(500).send(error.message);
   }
 
 }
@@ -61,9 +61,9 @@ exports.editarProduto = async (req,res) => {
       const foto1 = req.file?.filename;
       await produtoService.editarProduto(id, nome, preco, descricao, situacao, foto1 );
       
-      res.redirect(`/admin/editarItem/${id}`);
+      return res.redirect(`/admin/editarItem/${id}`);
     } catch (error) {
-      res.status(500).send(error.message);
+      return res.status(500).send(error.message);
     }
   });
   
@@ -73,8 +73,8 @@ exports.excluirProduto = async (req, res) => {
   try {
     const {id} = req.params;
     await produtoService.excluirProduto(id);
-    res.redirect('/admin/editarItens');
+    return res.redirect('/admin/editarItens');
   } catch (error) {
-    res.status(500).send(error.message);
+    return res.status(500).send(error.message);
   }
 }

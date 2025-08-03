@@ -4,9 +4,9 @@ const carrinhoService = require('../services/carrinhoService');
 exports.verCarrinho = async(req ,res) =>{
     try {
         const itens = await carrinhoService.carregarCarrinho(req.session.pedidoId);
-        res.render('carrinho',{itens});
+        return res.render('carrinho',{itens});
     } catch (error) {
-        res.status(500).send(error.message);
+        return res.status(500).send(error.message);
     }
 }
 
@@ -14,9 +14,9 @@ exports.removerDoCarrinho = async(req, res) => {
     const itemPeidoId = req.params.id;
     try {
         await carrinhoService.removerItem(req.session.pedidoId,itemPeidoId);
-        res.redirect('back');
+        return res.redirect('back');
     } catch (error) {
-        res.status(500).send(error.message);
+        return res.status(500).send(error.message);
     }
 }
 
@@ -37,7 +37,7 @@ exports.atualizarQuantidade = async (req, res) => {
   'Pragma': 'no-cache',
   'Expires': '0'
 });
-res.render('carrinho', { itens });
+return res.render('carrinho', { itens });
   } catch (error) {
     return res.status(500).send(error.message);
   }

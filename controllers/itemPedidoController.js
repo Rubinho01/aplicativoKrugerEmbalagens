@@ -7,8 +7,8 @@ exports.adicionarAoPedido = async(req, res) =>{
         const produtos = await Produto.findAll();
         const produto = await Produto.findByPk(produtoId);
         await itemPedidoService.add(quantidade, produto.preco, req.session.pedidoId, produto.id);
-        res.redirect('/pedido/carrinho');
+        return res.redirect('/pedido/carrinho');
     } catch (error) {
-        res.status(500).send(error.message);
+        return res.status(500).send(error.message);
     }
 }
