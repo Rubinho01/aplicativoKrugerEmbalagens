@@ -9,6 +9,7 @@ const sequelize = require('./config/database');
 const isProduction = process.env.NODE_ENV === 'production';
 
 
+
 (async () => {
   try {
     await sequelize.authenticate();
@@ -28,6 +29,7 @@ var pedidoRouter = require('./routes/pedidoRoute');
 var carrinhoRouter  = require('./routes/carrinhoRoute');
 
 var app = express();
+app.set('trust proxy', 1);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -63,7 +65,7 @@ app.use(session({
   cookie: {
     secure: isProduction,
     httpOnly: true,
-    sameSite: 'lax'
+    sameSite: 'none'
   }
 }));
 

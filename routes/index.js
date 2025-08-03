@@ -33,6 +33,7 @@ router.get('/usuario/editar', verificarSessao, usuarioController.carregarEditarU
 
 router.post('/usuario/editar', verificarSessao, usuarioController.editarUsuario);
 function verificarSessao(req, res, next){
+  console.log("Sessão recebida:", req.session);
   if(!req.session.userId) return res.redirect('/');
   else{
     next();
