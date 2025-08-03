@@ -6,7 +6,7 @@ var logger = require('morgan');
 const session = require('express-session');
 require('dotenv').config();
 const sequelize = require('./config/database');
-
+const isProduction = process.env.NODE_ENV === 'production';
 
 
 (async () => {
@@ -19,6 +19,8 @@ const sequelize = require('./config/database');
     console.error('Erro ao conectar/sincronizar:', err);
   }
 })();
+
+
 
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/adminRoute');
@@ -41,7 +43,6 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 const pgSession = require('connect-pg-simple')(session);
 const { Pool } = require('pg');
 
-// Crie o pool com as mesmas infos do seu Sequelize (Render)
 const pool = new Pool({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
