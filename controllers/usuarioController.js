@@ -16,7 +16,8 @@ exports.entrarSistema = async (req,res) => {
     try {
         const usuario = await usuarioService.buscarUsuarioEmaileSenha({email,senha});
         req.session.userId = usuario.id
-        res.redirect('/inicio');
+
+        return  res.redirect('/inicio');
     } catch (error) {
         res.status(401).send(error.message);
     }
@@ -27,7 +28,6 @@ exports.gerarPedido = async(req,res) => {
         const usuario = await Usuario.findByPk(req.session.userId);
         const produtos = await Produto.findAll();
         if(!usuario) return res.status(401).send("Usuario Não encontrado");
-        console.log(usuario.id);
         const pedido = await usuarioService.atribuirPedido({usuario: usuario.id});
         req.session.pedidoId = pedido.id;
         res.render('mainpage',{produtos});

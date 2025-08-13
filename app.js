@@ -48,8 +48,13 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false } // se estiver rodando localmente com HTTP
+
+  saveUninitialized: false,
+  cookie: {
+    secure: false, //'isProduction' em prod
+    httpOnly: true,
+    sameSite: false  //'none' em prod
+  }
 }));
 
 app.use('/', indexRouter);

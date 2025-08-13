@@ -32,10 +32,11 @@ router.get('/logout', verificarSessao, usuarioController.sair);
 router.get('/usuario/editar', verificarSessao, usuarioController.carregarEditarUsuario);
 
 router.post('/usuario/editar', verificarSessao, usuarioController.editarUsuario);
+
 function verificarSessao(req, res, next){
   if(!req.session.userId) return res.redirect('/');
   else{
-    next();
+    return next();
   }
 }
 
