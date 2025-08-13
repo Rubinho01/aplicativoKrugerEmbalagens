@@ -14,11 +14,11 @@ const verificarPedidoProcessandoMiddleware = async (req, res, next) => {
       req.session.pedidoId = pedidoExistente.id;
       return res.redirect('/pedido/verificarStatus');
     } else {
-      next();
+      return next();
     }
   } catch (error) {
     console.error('Erro no middleware:', error);
-    res.status(500).send(error.message);
+    return es.status(500).send(error.message);
   }
 };
 

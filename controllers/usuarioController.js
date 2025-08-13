@@ -16,7 +16,6 @@ exports.entrarSistema = async (req,res) => {
     try {
         const usuario = await usuarioService.buscarUsuarioEmaileSenha({email,senha});
         req.session.userId = usuario.id
-        console.log("Sessão salva:", req.session);
         return  res.redirect('/inicio');
     } catch (error) {
         return res.status(401).send(error.message);
