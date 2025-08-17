@@ -6,6 +6,7 @@ var logger = require('morgan');
 const session = require('express-session');
 require('dotenv').config();
 const sequelize = require('./config/database');
+const isProduction = process.env.NODE_ENV === 'production';
 
 
 
@@ -13,19 +14,14 @@ const sequelize = require('./config/database');
   try {
     await sequelize.authenticate();
     console.log('Banco conectado!');
-    await sequelize.sync();
+    await sequelize.sync({ alter: true });
+    console.log('Tabelas sincronizadas com sucesso!');
   } catch (err) {
-    console.error('Erro ao conectar:', err);
+    console.error('Erro ao conectar/sincronizar:', err);
   }
 })();
 
-sequelize.sync()
-  .then(() => {
-    console.log('Tabelas sincronizadas com sucesso!');
-  })
-  .catch((err) => {
-    console.error('Erro ao sincronizar tabelas:', err);
-  });
+
 
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/adminRoute');
@@ -33,6 +29,7 @@ var pedidoRouter = require('./routes/pedidoRoute');
 var carrinhoRouter  = require('./routes/carrinhoRoute');
 
 var app = express();
+app.set('trust proxy', 1);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -45,11 +42,31 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+const pgSession = require('connect-pg-simple')(session);
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
+});
+
 app.use(session({
-  secret: process.env.SESSION_SECRET,
+  store: new pgSession({
+    pool: pool,
+    tableName: 'session',
+  }),
+  secret: process.env.SESSION_SECRET || 'fallback-secret',
   resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false } // se estiver rodando localmente com HTTP
+  saveUninitialized: false,
+  cookie: {
+    secure: false, //'isProduction' em prod
+    httpOnly: true,
+    sameSite: false  //'none' em prod
+  }
 }));
 
 app.use('/', indexRouter);
