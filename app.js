@@ -63,9 +63,9 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: false, //'isProduction' em prod
+    secure: isProduction,
     httpOnly: true,
-    sameSite: false  //'none' em prod
+    sameSite: 'none'
   }
 }));
 

@@ -27,7 +27,6 @@ exports.gerarPedido = async(req,res) => {
         const usuario = await Usuario.findByPk(req.session.userId);
         const produtos = await Produto.findAll();
         if(!usuario) return res.status(401).send("Usuario Não encontrado");
-        console.log(usuario.id);
         const pedido = await usuarioService.atribuirPedido({usuario: usuario.id});
         req.session.pedidoId = pedido.id;
         return res.render('mainpage',{produtos});
