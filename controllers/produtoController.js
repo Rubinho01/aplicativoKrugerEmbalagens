@@ -34,9 +34,8 @@ exports.editarProduto = async (req,res) => {
 
     try {
       const { id, nome, preco, descricao, situacao, } = req.body;
-      const foto1 = req.file?.filepath;
+      const foto1 = req.file?.path;
       await produtoService.editarProduto(id, nome, preco, descricao, situacao, foto1 );
-      
       return res.redirect(`/admin/editarItem/${id}`);
     } catch (error) {
       return res.status(500).send(error.message);
